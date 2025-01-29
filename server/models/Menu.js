@@ -7,10 +7,10 @@ const schema = new Schema({
     },
     category: String,
     price: {
-        type: String,
+        type: Number,
         required: true,
     },
-    price: {
+    availability: {
         type: Boolean,
         required: true,
     },
