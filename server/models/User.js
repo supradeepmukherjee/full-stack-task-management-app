@@ -10,7 +10,6 @@ const schema = new Schema({
         type: String,
         required: true,
         select: false,
-        minLength: 8
     },
 })
 
