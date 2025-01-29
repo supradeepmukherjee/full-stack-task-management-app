@@ -2,7 +2,7 @@ import { hash } from 'bcrypt'
 import mongoose, { model, Schema } from 'mongoose'
 
 const schema = new Schema({
-    name: {
+    username: {
         type: String,
         required: true,
     },
