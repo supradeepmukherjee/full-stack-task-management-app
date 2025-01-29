@@ -38,4 +38,4 @@ const orderValidator = () => [
     body('status').isIn(['Pending', 'Completed']).withMessage('Invalid Status of Order')
 ]
 
-export { loginValidator, menuItemIDValidator, menuItemValidator, orderValidator, registerValidator, validateHandler }
+export { userValidator, menuItemIDValidator, menuItemValidator, orderValidator,  validateHandler }
