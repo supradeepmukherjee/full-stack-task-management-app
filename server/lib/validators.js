@@ -8,12 +8,7 @@ const validateHandler = (req, res, next) => {
     else next(new ErrorHandler(400, errors.array().map(({ msg }) => msg).join(', ')))
 }
 
-const registerValidator = () => [
-    body('username', 'Please Enter Username').notEmpty(),
-    body('password', 'Please Enter Password').isLength({ min: 8 }),
-]
-
-const loginValidator = () => [
+const userValidator = () => [
     body('username', 'Please Enter Username').notEmpty(),
     body('password', 'Please Enter Password').isLength({ min: 8 }),
 ]
