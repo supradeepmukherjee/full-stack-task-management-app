@@ -1,7 +1,9 @@
 import { Router } from 'express'
-import { menuItemIDValidator, menuItemValidator, userValidator, validateHandler } from './lib/validators.js'
+import { menuItemIDValidator, menuItemValidator, orderValidator, userValidator, validateHandler } from './lib/validators.js'
 import { login, register } from './controllers/user.js'
 import { addItem, deleteItem, getItems, updateItem } from './controllers/menu.js'
+import { createOrder, getOrders } from './controllers/order.js'
+import { isAuthenticated } from './middlewares/auth.js'
 
 const app = Router()
 
@@ -14,5 +16,9 @@ app.get('/menu', getItems)
 app.post('/menu', menuItemValidator(), validateHandler, addItem)
 app.put('/menu/:id', menuItemIDValidator(), validateHandler, updateItem)
 app.delete('/menu/:id', menuItemIDValidator(), validateHandler, deleteItem)
+
+app.use(isAuthenticated)
+app.post('/order', orderValidator(), validateHandler, createOrder)
+app.get('/orders', getOrders)
 
 export default app
