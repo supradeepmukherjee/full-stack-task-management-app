@@ -25,17 +25,17 @@ const menuItemIDValidator = () => [param('id', 'Please Enter Menu Item ID').notE
 }).withMessage('Invalid Item ID')]
 
 const orderValidator = () => [
-    body('userId', 'Please Enter User ID').notEmpty().custom(val => {
-        if (!mongoose.Types.ObjectId.isValid(val)) return false
-        return true
-    }).withMessage('Invalid User ID'),
+    // body('userId', 'Please Enter User ID').notEmpty().custom(val => {
+    //     if (!mongoose.Types.ObjectId.isValid(val)) return false
+    //     return true
+    // }).withMessage('Invalid User ID'),
     body('items').isArray({ min: 1 }).withMessage('There must be atleast 1 item'),
     body('items.*.itemId').custom(val => {
         if (!mongoose.Types.ObjectId.isValid(val)) return false
         return true
     }).withMessage('Invalid Item ID'),
     body('items.*.quantity').isInt({ min: 1 }).withMessage('Quantity of each item must be at least 1'),
-    body('status').isIn(['Pending', 'Completed']).withMessage('Invalid Status of Order')
+    // body('status').isIn(['Pending', 'Completed']).withMessage('Invalid Status of Order')
 ]
 
 export { userValidator, menuItemIDValidator, menuItemValidator, orderValidator,  validateHandler }
