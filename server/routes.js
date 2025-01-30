@@ -10,7 +10,6 @@ const app = Router()
 //user
 app.post('/register', userValidator(), validateHandler, register)
 app.post('/login', userValidator(), validateHandler, login)
-app.post('/user', getUserDetails)
 
 // menu
 app.get('/menu', getItems)
@@ -19,6 +18,7 @@ app.put('/menu/:id', menuItemIDValidator(), validateHandler, updateItem)
 app.delete('/menu/:id', menuItemIDValidator(), validateHandler, deleteItem)
 
 app.use(isAuthenticated)
+app.get('/user', getUserDetails)
 app.post('/order', orderValidator(), validateHandler, createOrder)
 app.get('/orders', getOrders)
 
