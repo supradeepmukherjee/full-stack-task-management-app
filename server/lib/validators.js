@@ -15,8 +15,8 @@ const userValidator = () => [
 
 const menuItemValidator = () => [
     body('name', 'Please Enter Name').notEmpty(),
-    body('price', 'Please Enter Password').isInt({ min: 1 }),
-    body('availability', 'Please Enter Password').isBoolean({ strict: true })
+    body('price', 'Please Enter Price').isInt({ min: 1 }),
+    body('availability', 'Please Enter Availability').isBoolean({ strict: true })
 ]
 
 const menuItemIDValidator = () => [param('id', 'Please Enter Menu Item ID').notEmpty().custom(val => {
