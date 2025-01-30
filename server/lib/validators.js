@@ -38,4 +38,9 @@ const orderValidator = () => [
     // body('status').isIn(['Pending', 'Completed']).withMessage('Invalid Status of Order')
 ]
 
-export { userValidator, menuItemIDValidator, menuItemValidator, orderValidator,  validateHandler }
+const userIDValidator = () => [param('id', 'Please Enter User ID').notEmpty().custom(val => {
+    if (!mongoose.Types.ObjectId.isValid(val)) return false
+    return true
+}).withMessage('Invalid User ID')]
+
+export { userValidator, menuItemIDValidator, menuItemValidator, orderValidator, validateHandler, userIDValidator }

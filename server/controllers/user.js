@@ -31,5 +31,10 @@ const login = tryCatch(async (req, res, next) => {
         .json({ success: true, msg: 'Logged in Successfully', user })
 })
 
+const getUserDetails = tryCatch(async (req, res, next) => {
+    const user = await User.findById(req.user)
+    if (!user) return next(new ErrorHandler(404, 'User not found'))
+    res.status(200).json({ success: true, user })
+})
 
-export { register, login }
+export { register, login, getUserDetails }

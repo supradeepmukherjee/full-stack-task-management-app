@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { menuItemIDValidator, menuItemValidator, orderValidator, userValidator, validateHandler } from './lib/validators.js'
-import { login, register } from './controllers/user.js'
+import { menuItemIDValidator, menuItemValidator, orderValidator, userIDValidator, userValidator, validateHandler } from './lib/validators.js'
+import { getUserDetails, login, register } from './controllers/user.js'
 import { addItem, deleteItem, getItems, updateItem } from './controllers/menu.js'
 import { createOrder, getOrders } from './controllers/order.js'
 import { isAuthenticated } from './middlewares/auth.js'
@@ -10,6 +10,7 @@ const app = Router()
 //user
 app.post('/register', userValidator(), validateHandler, register)
 app.post('/login', userValidator(), validateHandler, login)
+app.post('/user/:id', userIDValidator(), validateHandler, getUserDetails)
 
 // menu
 app.get('/menu', getItems)
