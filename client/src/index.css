@@ -64,3 +64,7 @@
     @apply bg-background text-foreground;
   }
 }
+body{
+  background-color: #001A27;
+  color:white
+}

@@ -104,13 +104,13 @@ const RegisterLogin = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full text-center" disabled={loading}>
+          <Button type="submit" className="w-full text-center border-white border-2" disabled={loading}>
             {login ? 'Login' : 'Register'}
           </Button>
         </form>
       </Form>
       <div className="flex justify-center">
-        <Button type="submit" className="mt-10 px-4" onClick={() => setLogin(l => !l)} disabled={loading}>
+        <Button type="submit" className="mt-10 px-4 border-white border-2" onClick={() => setLogin(l => !l)} disabled={loading}>
           {login ? 'Not registered yet? Click here' : 'Already Registered?'}
         </Button>
       </div>
