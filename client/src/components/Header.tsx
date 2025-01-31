@@ -1,28 +1,26 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { FaShoppingCart } from "react-icons/fa";
-import { IoMdAddCircle } from "react-icons/io";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "./ui/form"
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
 import { server } from "@/constant";
-import { MdRemoveShoppingCart } from "react-icons/md";
-import { IoIosAddCircle } from "react-icons/io";
-import { FaMinusCircle, FaAngleDown } from "react-icons/fa";
-import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, } from "@tanstack/react-table"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
-import { useState } from "react";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { ArrowUpDown } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { CartItem, decrement, increment, remove } from "@/redux/reducers/cart";
+import { RootState } from "@/redux/store";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, } from "@tanstack/react-table";
+import axios from "axios";
+import { ArrowUpDown } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { FaAngleDown, FaMinusCircle, FaShoppingCart } from "react-icons/fa";
+import { IoIosAddCircle, IoMdAddCircle } from "react-icons/io";
+import { MdRemoveShoppingCart } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { Button } from "./ui/button";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "./ui/form";
+import { Input } from "./ui/input";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name must be atleast 4 characters' }),
@@ -38,7 +36,7 @@ const Header = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
-
+  const navigate = useNavigate()
   const table = useReactTable({
     data: items,
     columns,
@@ -323,6 +321,20 @@ const Header = () => {
                 </Button>
               </div>
             </div>
+            <div className="flex items-center justify-end space-x-2 py-4">
+              <div className="space-x-2">
+                <DialogClose asChild>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => navigate('/checkout')}
+                    disabled={items.length === 0}
+                  >
+                    Checkout
+                  </Button>
+                </DialogClose>
+              </div>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
@@ -386,13 +398,13 @@ const Btns = ({ data }: { data: CartItem }) => {
   const dispatch = useDispatch()
   return (
     <div className='flex'>
-      <span className='hover:bg-black rounded-full p-1' onClick={()=>dispatch(decrement(data))}>
+      <span className='hover:bg-black rounded-full p-1' onClick={() => dispatch(decrement(data))}>
         <FaMinusCircle className='h-4 w-4 cursor-pointer' />
       </span>
-      <span className='hover:bg-black rounded-full p-1' onClick={()=>dispatch(increment(data))}>
+      <span className='hover:bg-black rounded-full p-1' onClick={() => dispatch(increment(data))}>
         <IoIosAddCircle className='h-4 w-4 cursor-pointer' />
       </span>
-      <span className='hover:bg-black rounded-full p-1' onClick={()=>dispatch(remove(data))}>
+      <span className='hover:bg-black rounded-full p-1' onClick={() => dispatch(remove(data))}>
         <MdRemoveShoppingCart className='h-4 w-4 cursor-pointer' />
       </span>
     </div>
