@@ -1,19 +1,22 @@
-import { cn } from "@/lib/utils";
-import { MdDelete } from "react-icons/md";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "./form"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./dialog"
-import { FaEdit } from "react-icons/fa";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { RadioGroup, RadioGroupItem } from "./radio-group"
-import { Input } from "./input";
-import { Button } from "./button";
-import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
 import { server } from "@/constant";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import { increment } from "@/redux/reducers/cart";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogClose } from "@radix-ui/react-dialog";
+import axios from "axios";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { BiSolidCartAdd } from "react-icons/bi";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { z } from "zod";
+import { Button } from "./button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "./form";
+import { Input } from "./input";
+import { RadioGroup, RadioGroupItem } from "./radio-group";
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name must be atleast 4 characters' }).optional(),
@@ -58,6 +61,7 @@ export const BentoGridItem = ({
 }) => {
   const [loading, setLoading] = useState(false)
   const { toast, } = useToast()
+  const dispatch = useDispatch()
   const form = useForm<z.infer<typeof FormSchema>>({ resolver: zodResolver(FormSchema) })
   async function onSubmit({ availability, name, price, category }: z.infer<typeof FormSchema>) {
     if (!(availability || name || price || category)) return toast({
@@ -103,7 +107,7 @@ export const BentoGridItem = ({
       setLoading(false)
     }
   }
-  const handleDel=async()=>{
+  const handleDel = async () => {
     setLoading(true)
     toast({
       title: "Deleting Item",
@@ -142,8 +146,13 @@ export const BentoGridItem = ({
       )}
     >
       <div className="group-hover/bento:translate-x-2 transition duration-200 flex flex-col justify-evenly">
-        <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
-          {title}
+        <div className="font-sans font-bold flex justify-between items-center text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
+          <span>
+            {title}
+          </span>
+          <span className='hover:bg-gray-100 rounded-full p-1' onClick={() => dispatch(increment({ id, availability, title, description, price }))}>
+            <BiSolidCartAdd className='h-6 w-6 cursor-pointer' />
+          </span>
         </div>
         <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300">
           {description}
@@ -172,7 +181,7 @@ export const BentoGridItem = ({
                       Cancel
                     </Button>
                   </DialogClose>
-                  </div>
+                </div>
               </DialogContent>
             </Dialog>
             <Dialog>
