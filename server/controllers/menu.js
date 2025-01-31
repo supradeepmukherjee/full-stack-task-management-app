@@ -3,9 +3,9 @@ import { Menu } from '../models/Menu.js'
 import { Order } from "../models/Order.js"
 import { ErrorHandler } from "../util.js"
 
-const checkOrderPending = async text => {
+const checkOrderPending = async (text, id) => {
     const orders = await Order.find({
-        'items.itemId': req.params.id,
+        'items.itemId': id,
         status: 'Pending'
     })
     if (orders.length !== 0) return `Sorry, a Menu Item can't be ${text}d before ${orders.length > 1 ? 'the orders' : 'an order'} containing the item ${orders.length > 1 ? 'are' : 'is'} completed`
@@ -25,8 +25,8 @@ const addItem = tryCatch(async (req, res, next) => {
 
 const updateItem = tryCatch(async (req, res, next) => {
     const { name, category, price, availability } = req.body
-    if (!name || !category || !price || !availability) return next(new ErrorHandler(400, 'No change in Item Details'))
-    const orderPendingMsg = await checkOrderPending('update')
+    if (!(name || category || price || availability)) return next(new ErrorHandler(400, 'No change in Item Details'))
+    const orderPendingMsg = await checkOrderPending('update', req.params.id)
     if (orderPendingMsg !== false) return next(new ErrorHandler(400, orderPendingMsg))
     const item = await Menu.findById(req.params.id)
     if (!item) return next(new ErrorHandler(404, 'Menu Item not Found'))
@@ -39,7 +39,7 @@ const updateItem = tryCatch(async (req, res, next) => {
 })
 
 const deleteItem = tryCatch(async (req, res, next) => {
-    const orderPendingMsg = await checkOrderPending('delete')
+    const orderPendingMsg = await checkOrderPending('delete', req.params.id)
     if (orderPendingMsg !== false) return next(new ErrorHandler(400, orderPendingMsg))
     const item = await Menu.findByIdAndDelete(req.params.id)
     if (!item) return next(new ErrorHandler(404, 'Menu Item not Found'))
