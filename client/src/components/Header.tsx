@@ -11,8 +11,18 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import { server } from "@/constant";
+import { MdRemoveShoppingCart } from "react-icons/md";
+import { IoIosAddCircle } from "react-icons/io";
+import { FaMinusCircle, FaAngleDown } from "react-icons/fa";
+import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, } from "@tanstack/react-table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
 import { useState } from "react";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { ArrowUpDown } from "lucide-react";
+import { CartItem, decrement, increment, remove } from "@/redux/reducers/cart";
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name must be atleast 4 characters' }),
@@ -23,6 +33,30 @@ const FormSchema = z.object({
 
 const Header = () => {
   const { toast, } = useToast()
+  const { items } = useSelector(({ cart }: RootState) => cart);
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
+
+  const table = useReactTable({
+    data: items,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  })
   const form = useForm<z.infer<typeof FormSchema>>({ resolver: zodResolver(FormSchema) })
   async function onSubmit({ availability, name, price, category }: z.infer<typeof FormSchema>) {
     toast({
@@ -164,17 +198,204 @@ const Header = () => {
           </Form>
         </DialogContent>
       </Dialog>
-
-      <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-          <span className="pr-4">
-            Cart (0)
-          </span>
-          <FaShoppingCart />
-        </span>
-      </button>
+      <Dialog >
+        <DialogTrigger asChild>
+          <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+            <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+              <span className="pr-4">
+                Cart ({items.length})
+              </span>
+              <FaShoppingCart />
+            </span>
+          </button>
+        </DialogTrigger>
+        <DialogContent className=" bg-[#001A27]">
+          <DialogHeader>
+            <DialogTitle>
+              Your Cart
+            </DialogTitle>
+          </DialogHeader>
+          <div className="max-w-screen-sm overflow-auto">
+            <div className="flex items-center gap-4 justify-between py-4">
+              <Input
+                placeholder="Filter Category..."
+                value={(table.getColumn("category")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                  table.getColumn("category")?.setFilterValue(event.target.value)
+                }
+                className="max-w-sm"
+              />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="ml-auto text-black">
+                    Columns <FaAngleDown />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {table
+                    .getAllColumns()
+                    .filter((column) => column.getCanHide())
+                    .map((column) => {
+                      return (
+                        <DropdownMenuCheckboxItem
+                          key={column.id}
+                          className="capitalize"
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(value) =>
+                            column.toggleVisibility(!!value)
+                          }
+                        >
+                          {column.id}
+                        </DropdownMenuCheckboxItem>
+                      )
+                    })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <TableHead key={header.id} className="text-white">
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                          </TableHead>
+                        )
+                      })}
+                    </TableRow>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() && "selected"}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        There are no items in your Cart
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+            <div className="flex items-center justify-end space-x-2 py-4">
+              <div className="space-x-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </header>
+  )
+}
+
+const columns: ColumnDef<CartItem>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("name")}</div>
+    ),
+  },
+  {
+    accessorKey: "price",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Price
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("price")}</div>,
+  },
+  {
+    accessorKey: "quantity",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Quantity
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("quantity")}</div>,
+  },
+  {
+    accessorKey: "category",
+    header: () => <div className="text-right">Category</div>,
+    cell: ({ row }) => {
+      return <div className="text-right font-medium">{row.getValue("category")}</div>
+    },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => <Btns data={row.original} />
+  },
+]
+
+const Btns = ({ data }: { data: CartItem }) => {
+  const dispatch = useDispatch()
+  return (
+    <div className='flex'>
+      <span className='hover:bg-black rounded-full p-1' onClick={()=>dispatch(decrement(data))}>
+        <FaMinusCircle className='h-4 w-4 cursor-pointer' />
+      </span>
+      <span className='hover:bg-black rounded-full p-1' onClick={()=>dispatch(increment(data))}>
+        <IoIosAddCircle className='h-4 w-4 cursor-pointer' />
+      </span>
+      <span className='hover:bg-black rounded-full p-1' onClick={()=>dispatch(remove(data))}>
+        <MdRemoveShoppingCart className='h-4 w-4 cursor-pointer' />
+      </span>
+    </div>
   )
 }
 
