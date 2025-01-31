@@ -35,6 +35,7 @@ const Menu = () => {
           description={i.category}
           price={i.price}
           availability={i.availability ? 'Available' : 'Unavailable'}
+          id={i._id}
         />
       ))}
     </BentoGrid>
