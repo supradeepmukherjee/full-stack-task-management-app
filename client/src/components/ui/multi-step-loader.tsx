@@ -20,7 +20,7 @@ const CheckIcon = ({ className }: { className?: string }) => {
 
 const CheckFilled = ({ className }: { className?: string }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" className={cn('h-6 w-6',className)} viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stopColor="#2B0EFF"></stop><stop offset=".3" stopColor="#2B0EFF" stopOpacity=".9"></stop><stop offset=".6" stopColor="#2B0EFF" stopOpacity=".6"></stop><stop offset=".8" stopColor="#2B0EFF" stopOpacity=".3"></stop><stop offset="1" stopColor="#2B0EFF" stopOpacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" strokeWidth="15" strokeLinecap="round" strokeDasharray="200 1000" strokeDashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#2B0EFF" strokeWidth="15" strokeLinecap="round" cx="100" cy="100" r="70"></circle></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" className={cn('h-6 w-6', className)}><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stopColor="#F8FF75"></stop><stop offset=".3" stopColor="#F8FF75" stopOpacity=".9"></stop><stop offset=".6" stopColor="#F8FF75" stopOpacity=".6"></stop><stop offset=".8" stopColor="#F8FF75" stopOpacity=".3"></stop><stop offset="1" stopColor="#F8FF75" stopOpacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" strokeWidth="24" strokeLinecap="round" strokeDasharray="200 1000" strokeDashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2.8" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#F8FF75" strokeWidth="24" strokeLinecap="round" cx="100" cy="100" r="70"></circle></svg>
   );
 };
 
@@ -54,20 +54,10 @@ const LoaderCore = ({
                 <CheckIcon className="text-black dark:text-white" />
               )}
               {index <= value && (
-                <CheckFilled
-                  className={cn(
-                    "text-black dark:text-white",
-                    value === index &&
-                    "text-black dark:text-lime-500 opacity-100"
-                  )}
-                />
+                <CheckFilled className={"text-white"} />
               )}
             </div>
-            <span
-              className={cn(
-                "text-black dark:text-white",
-                value === index && "text-black dark:text-lime-500 opacity-100"
-              )}
+            <span className={"text-white"}
             >
               {loadingState.text}
             </span>
