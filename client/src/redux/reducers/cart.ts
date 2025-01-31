@@ -34,10 +34,14 @@ const cartSlice = createSlice({
             const itemIndex = state.items.findIndex((item) => item.id === action.payload.id)
             if (itemIndex !== -1) state.items.splice(itemIndex, 1)
             localStorage.setItem("items", JSON.stringify(state.items));
-        }
+        },
+        clearCart: state => {
+            localStorage.removeItem('items')
+            state.items = []
+        },
     }
 }
 )
 
 export default cartSlice
-export const { decrement, increment, remove } = cartSlice.actions
+export const { decrement, increment, remove, clearCart } = cartSlice.actions
