@@ -6,6 +6,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { MultiStepLoader } from "./components/ui/multi-step-loader";
 import { userExists, userNotExists } from "./redux/reducers/auth";
 import Protect from "./components/Protect";
+import Header from "./components/Header";
 const RegisterLogin = lazy(() => import("./pages/RegisterLogin"))
 const Menu = lazy(() => import("./pages/Menu"))
 
@@ -22,6 +23,7 @@ function App() {
       <Router>
         {loading ? <Loader /> :
           <Suspense fallback={<Loader />}>
+            <Header />
             <Routes>
               <Route path='/' element={<RegisterLogin />} />
               <Route element={<Protect user={user} />}>
