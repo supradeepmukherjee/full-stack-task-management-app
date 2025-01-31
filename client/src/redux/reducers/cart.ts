@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-interface CartItem {
+export interface CartItem {
     id: string
     name: string
     price: number
     quantity: number
+    category: string
 }
 
 interface CartState { items: CartItem[] }
@@ -22,11 +23,16 @@ const cartSlice = createSlice({
             localStorage.setItem("items", JSON.stringify(state.items))
         },
         decrement: (state, action) => {
-            const itemIndex = state.items.findIndex((item) => item.id === action.payload)
+            const itemIndex = state.items.findIndex((item) => item.id === action.payload.id)
             if (itemIndex !== -1) {
                 if (state.items[itemIndex].quantity > 1) state.items[itemIndex].quantity -= 1
                 else state.items.splice(itemIndex, 1)
             }
+            localStorage.setItem("items", JSON.stringify(state.items));
+        },
+        remove: (state, action) => {
+            const itemIndex = state.items.findIndex((item) => item.id === action.payload.id)
+            if (itemIndex !== -1) state.items.splice(itemIndex, 1)
             localStorage.setItem("items", JSON.stringify(state.items));
         }
     }
@@ -34,4 +40,4 @@ const cartSlice = createSlice({
 )
 
 export default cartSlice
-export const { decrement, increment } = cartSlice.actions
+export const { decrement, increment, remove } = cartSlice.actions
