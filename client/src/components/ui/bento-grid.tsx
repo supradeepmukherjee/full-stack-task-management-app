@@ -150,14 +150,19 @@ export const BentoGridItem = ({
           <span>
             {title}
           </span>
-          <span className='hover:bg-gray-100 rounded-full p-1' onClick={() => dispatch(increment({
-            id,
-            availability,
-            name: title,
-            category: description,
-            price
-          }))}>
-            <BiSolidCartAdd className='h-6 w-6 cursor-pointer' />
+          <span
+            className={'rounded-full p-1 ' + (availability ? 'hover:bg-gray-100' : '')}
+            onClick={() => {
+              if (availability)
+                dispatch(increment({
+                  id,
+                  availability,
+                  name: title,
+                  category: description,
+                  price
+                }))
+            }}>
+            <BiSolidCartAdd className={'h-6 w-6 ' + (availability ? 'cursor-pointer' : '')} />
           </span>
         </div>
         <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300">
