@@ -10,9 +10,9 @@ import axios from "axios";
 import { ArrowUpDown } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaAngleDown, FaMinusCircle, FaShoppingCart } from "react-icons/fa";
+import { FaAngleDown, FaHistory, FaMinusCircle, FaShoppingCart } from "react-icons/fa";
 import { IoIosAddCircle, IoMdAddCircle } from "react-icons/io";
-import { MdRemoveShoppingCart } from "react-icons/md";
+import { MdMenuBook, MdRemoveShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
@@ -196,6 +196,24 @@ const Header = () => {
           </Form>
         </DialogContent>
       </Dialog>
+      <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50" onClick={() => navigate('/menu')}>
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+          <span className="pr-4 hidden md:block">
+            Go to Menu
+          </span>
+          <MdMenuBook />
+        </span>
+      </button>
+      <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50" onClick={() => navigate('/orders')}>
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+          <span className="pr-4 hidden md:block">
+            Order History
+          </span>
+          <FaHistory />
+        </span>
+      </button>
       <Dialog >
         <DialogTrigger asChild>
           <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
@@ -342,7 +360,7 @@ const Header = () => {
   )
 }
 
-const columns: ColumnDef<CartItem>[] = [
+export const columns: ColumnDef<CartItem>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -394,7 +412,7 @@ const columns: ColumnDef<CartItem>[] = [
   },
 ]
 
-const Btns = ({ data }: { data: CartItem }) => {
+export const Btns = ({ data }: { data: CartItem }) => {
   const dispatch = useDispatch()
   return (
     <div className='flex'>
