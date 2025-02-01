@@ -114,14 +114,6 @@ const CreateColumns = (
             </DialogHeader>
             <div className="max-w-screen-sm overflow-auto">
               <div className="flex items-center gap-4 justify-between py-4">
-                <Input
-                  placeholder="Filter Category..."
-                  value={(table.getColumn("category")?.getFilterValue() as string) ?? ""}
-                  onChange={(event) =>
-                    table.getColumn("category")?.setFilterValue(event.target.value)
-                  }
-                  className="max-w-sm"
-                />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="ml-auto text-black">
@@ -321,7 +313,6 @@ const Orders = () => {
       })
       .finally(() => setLoading(false))
   }, [toast])
-  console.log(orders)
   return (
     <div className="w-full">
       <h1 className="text-center text-3xl font-bold">
@@ -336,6 +327,14 @@ const Orders = () => {
         :
         <>
           <div className="flex items-center gap-4 justify-between py-4">
+            <Input
+              placeholder="Filter by Status..."
+              value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
+              onChange={(event) =>
+                table.getColumn("status")?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="ml-auto text-black">

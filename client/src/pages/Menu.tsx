@@ -24,7 +24,7 @@ const Menu = () => {
     availability: boolean
   }[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 1
+  const itemsPerPage = 6
   const startIndex = (currentPage - 1) * itemsPerPage
   const paginatedItems = items.slice(startIndex, startIndex + itemsPerPage)
   const totalPages = Math.ceil(items.length / itemsPerPage)
@@ -77,35 +77,36 @@ const Menu = () => {
                   />))}
               </BentoGrid>
             </div>
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() => handlePageChange(currentPage > 1 ? currentPage - 1 : currentPage)}
-                  />
-                </PaginationItem>
-                {[...Array(totalPages)].map((_, index) => (
-                  <PaginationItem key={index}>
-                    <PaginationLink
-                      isActive={currentPage === index + 1}
-                      onClick={() => handlePageChange(index + 1)}
-                    >
-                      {index + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-                {totalPages > currentPage + 2 && (
+            {!loading && items.length > 0 &&
+              <Pagination>
+                <PaginationContent>
                   <PaginationItem>
-                    <PaginationEllipsis />
+                    <PaginationPrevious
+                      onClick={() => handlePageChange(currentPage > 1 ? currentPage - 1 : currentPage)}
+                    />
                   </PaginationItem>
-                )}
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={() => handlePageChange(currentPage < totalPages ? currentPage + 1 : currentPage)}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+                  {[...Array(totalPages)].map((_, index) => (
+                    <PaginationItem key={index}>
+                      <PaginationLink
+                        isActive={currentPage === index + 1}
+                        onClick={() => handlePageChange(index + 1)}
+                      >
+                        {index + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  {totalPages > currentPage + 2 && (
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  )}
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => handlePageChange(currentPage < totalPages ? currentPage + 1 : currentPage)}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>}
           </>
       )
   )
