@@ -25,7 +25,7 @@ const addItem = tryCatch(async (req, res, next) => {
 
 const updateItem = tryCatch(async (req, res, next) => {
     const { name, category, price, availability } = req.body
-    if (!(name || category || price || availability)) return next(new ErrorHandler(400, 'No change in Item Details'))
+    if (name === undefined && category == undefined && price === undefined && availability === undefined) return next(new ErrorHandler(400, 'No change in Item Details'))
     const orderPendingMsg = await checkOrderPending('update', req.params.id)
     if (orderPendingMsg !== false) return next(new ErrorHandler(400, orderPendingMsg))
     const item = await Menu.findById(req.params.id)
