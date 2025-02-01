@@ -30,10 +30,10 @@ const updateItem = tryCatch(async (req, res, next) => {
     if (orderPendingMsg !== false) return next(new ErrorHandler(400, orderPendingMsg))
     const item = await Menu.findById(req.params.id)
     if (!item) return next(new ErrorHandler(404, 'Menu Item not Found'))
-    if (name) item.name = name
-    if (category) item.category = category
-    if (price) item.price = price
-    if (availability) item.availability = availability
+    if (name !== undefined) item.name = name
+    if (category !== undefined) item.category = category
+    if (price !== undefined) item.price = price
+    if (availability !== undefined) item.availability = availability
     await item.save()
     res.status(200).json({ success: true, item, msg: 'Menu Item updated Successfully' })
 })
