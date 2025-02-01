@@ -79,6 +79,21 @@ const CreateColumns = (
       cell: ({ row }) => <div className="lowercase">{(row.getValue("items") as Item[]).length}</div>,
     },
     {
+      accessorKey: "status",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Status
+            <ArrowUpDown />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="">{row.getValue("status")}</div>,
+    },
+    {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => (
@@ -306,6 +321,7 @@ const Orders = () => {
       })
       .finally(() => setLoading(false))
   }, [toast])
+  console.log(orders)
   return (
     <div className="w-full">
       <h1 className="text-center text-3xl font-bold">
