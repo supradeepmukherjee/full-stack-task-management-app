@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "supradeep-leaderboardserver",
+    "name": "full-stack-task-management-app-supradeep",
     "builds": [
       {
         "src": "server.js",
