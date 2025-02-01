@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { server } from "@/constant"
 import { useToast } from "@/hooks/use-toast"
 import { userExists } from "@/redux/reducers/auth"
+import { RootState } from "@/redux/store"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -18,7 +19,7 @@ const formSchema = z.object({
 })
 
 const RegisterLogin = () => {
-  const { user } = useSelector(({ auth }) => auth)
+  const { user } = useSelector(({ auth }: RootState) => auth)
   const dispatch = useDispatch()
   const [login, setLogin] = useState(true)
   const [loading, setLoading] = useState(false)

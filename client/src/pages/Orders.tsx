@@ -28,8 +28,9 @@ type Order = {
 }
 
 const CreateColumns = (
-  table: ReturnType<typeof useReactTable<Order>>,
-  setItems: Dispatch<SetStateAction<Item[]>>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  table: ReturnType<typeof useReactTable<any>>,
+  setItems: Dispatch<SetStateAction<[] | (Item & { quantity: number; })[]>>,
 ): ColumnDef<Order>[] => {
   const [open, setOpen] = useState(false)
   return [
@@ -281,7 +282,7 @@ const Orders = () => {
   })
   const table = useReactTable({
     data: orders,
-    columns: CreateColumns(dialogTable, setItems),
+    columns: CreateColumns(dialogTable, setItems), 
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
