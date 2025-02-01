@@ -37,4 +37,12 @@ const getUserDetails = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, user })
 })
 
-export { register, login, getUserDetails }
+const logout = tryCatch(async (req, res, next) =>
+    res.status(200).cookie('user', null, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+        maxAge: 0,
+    }).json({ success: true, msg: 'Logged Out Successfully' }))
+
+export { register, login, getUserDetails, logout }

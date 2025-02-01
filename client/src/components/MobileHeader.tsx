@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaAngleDown, FaHistory, FaShoppingCart } from "react-icons/fa";
 import { IoMdAddCircle, IoMdMenu } from "react-icons/io";
-import { MdMenuBook } from "react-icons/md";
+import { MdLogout, MdMenuBook } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
@@ -365,6 +365,34 @@ const MobileHeader = () => {
                 </div>
               </DialogContent>
             </Dialog>
+            <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50" onClick={() => {
+              toast({
+                title: "Logging Out.",
+                description: "Please Wait...",
+              })
+              axios.get(server + `/logout`, { withCredentials: true })
+                .then(({ data }) => {
+                  toast({ title: data.msg })
+                  window.location.reload()
+                })
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                .catch((err: any) => {
+                  console.log(err)
+                  toast({
+                    variant: "destructive",
+                    title: err?.response?.data?.msg || "Uh oh! Couldn't Log Out",
+                    description: "Please Try Again",
+                  })
+                })
+            }}>
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+              <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+                <span className="pr-4">
+                  Logout
+                </span>
+                <MdLogout />
+              </span>
+            </button>
           </div>
         </DrawerContent>
       </Drawer>
