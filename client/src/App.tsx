@@ -13,6 +13,7 @@ import MobileHeader from './components/MobileHeader';
 const RegisterLogin = lazy(() => import("./pages/RegisterLogin"))
 const Menu = lazy(() => import("./pages/Menu"))
 const Checkout = lazy(() => import("./pages/Checkout"))
+const Orders = lazy(() => import("./pages/Orders"))
 
 function App() {
   const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -34,7 +35,7 @@ function App() {
               <Route element={<Protect user={user} />}>
                 <Route path='/menu' element={<Menu />} />
                 <Route path='/checkout' element={<Checkout />} />
-
+                <Route path='/orders' element={<Orders />} />
               </Route>
             </Routes>
           </Suspense>}
