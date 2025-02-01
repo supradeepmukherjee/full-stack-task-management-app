@@ -161,6 +161,7 @@ export const BentoGridItem = ({
                   category: description,
                   price
                 }))
+              toast({ title: title + " added to Cart" })
             }}>
             <BiSolidCartAdd className={'h-6 w-6 ' + (availability ? 'cursor-pointer' : '')} />
           </span>
