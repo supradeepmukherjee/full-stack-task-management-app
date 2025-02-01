@@ -43,7 +43,7 @@ schema.pre('save', async function (next) {
         const menuItem = await Menu.findById(item.itemId)
         if (menuItem) total += menuItem.price * item.quantity
     }
-    this.totalPrice = total
+    this.totalAmount = total
     next()
 });
 
