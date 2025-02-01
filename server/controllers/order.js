@@ -11,7 +11,7 @@ const createOrder = tryCatch(async (req, res, next) => {
 })
 
 const getOrders = tryCatch(async (req, res, next) => {
-    const orders = await Order.find({ userId: req.user })
+    const orders = await Order.find({ userId: req.user }).populate('items.itemId', '-availability')
     res.status(200).json({ success: true, orders, msg: 'All Orders of Logged-in User Fetched Successfully' })
 })
 
