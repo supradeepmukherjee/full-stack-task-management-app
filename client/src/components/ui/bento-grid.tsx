@@ -153,7 +153,7 @@ export const BentoGridItem = ({
           <span
             className={'rounded-full p-1 ' + (availability === 'Available' ? 'hover:bg-gray-100' : '')}
             onClick={() => {
-              if (availability === 'Available')
+              if (availability === 'Available') {
                 dispatch(increment({
                   id,
                   availability,
@@ -161,7 +161,8 @@ export const BentoGridItem = ({
                   category: description,
                   price
                 }))
-              toast({ title: title + " added to Cart" })
+                toast({ title: title + " added to Cart" })
+              }
             }}>
             <BiSolidCartAdd className={'h-6 w-6 ' + (availability === 'Available' ? 'cursor-pointer' : '')} />
           </span>
