@@ -14,6 +14,7 @@ const RegisterLogin = lazy(() => import("./pages/RegisterLogin"))
 const Menu = lazy(() => import("./pages/Menu"))
 const Checkout = lazy(() => import("./pages/Checkout"))
 const Orders = lazy(() => import("./pages/Orders"))
+const NotFound = lazy(() => import("./pages/NotFound"))
 
 function App() {
   const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -29,7 +30,7 @@ function App() {
       <Router>
         {loading ? <Loader /> :
           <Suspense fallback={<Loader />}>
-            {isDesktop ? <Header /> : <MobileHeader />}
+            {user && (isDesktop ? <Header /> : <MobileHeader />)}
             <Routes>
               <Route path='/' element={<RegisterLogin />} />
               <Route element={<Protect user={user} />}>
@@ -37,6 +38,7 @@ function App() {
                 <Route path='/checkout' element={<Checkout />} />
                 <Route path='/orders' element={<Orders />} />
               </Route>
+              <Route path='*' element={<NotFound className={user ? 'h-[90vh]' : 'h-screen'} />} />
             </Routes>
           </Suspense>}
       </Router>
