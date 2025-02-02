@@ -77,9 +77,9 @@ This is a full-stack food delivery system built using **Node.js** for the backen
 - `POST /order` - Place an order
 - `GET /orders` - Fetch all orders of a logged-in user
 
-## Deployment (If applicable)
-- **Frontend**: To be Updated
-- **Backend**: To be Updated
+## Deployment
+- **Frontend**: [https://full-stack-task-management-app-supradeep.vercel.app](https://full-stack-task-management-app-supradeep.vercel.app)
+- **Backend**: [https://supradeep-full-stack-task-management-app.vercel.app](https://supradeep-full-stack-task-management-app.vercel.app)
 
 ## Challenges & Assumptions
 - Used JWT for authentication, assuming stateless session management.
