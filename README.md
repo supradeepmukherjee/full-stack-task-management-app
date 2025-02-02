@@ -86,3 +86,4 @@ This is a full-stack food delivery system built using **Node.js** for the backen
 - MongoDB Atlas was used for cloud database storage.
 - Assumed users can only modify their own orders.
 - Implemented simple role-based access for menu management.
+- Since no Cart Model was to be designed as per the assignment, the Cart Details are stored in the Local Storage but because of this when a User Logs out & someone else registers a new account on the same computer, the new user will be able to see the Cart Items of the previous logged in User because the localStorage is not being cleared when the previous user is logging out. The storage could have been cleared but this could have caused inconvenience if the previous user logged in again as he/she will not be able to find the Items in the cart after logging in the second time.
